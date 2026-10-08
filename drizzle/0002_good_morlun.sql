@@ -1,0 +1,1 @@
+CREATE INDEX `idx_leads_source_url` ON `leads` (`source_url`);

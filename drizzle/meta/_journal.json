@@ -1,0 +1,55 @@
+{
+  "version": "7",
+  "dialect": "sqlite",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "6",
+      "when": 1790665767573,
+      "tag": "0000_shallow_carmella_unuscione",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1790669753869,
+      "tag": "0001_colorful_ezekiel",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1790669847944,
+      "tag": "0002_good_morlun",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1790670638958,
+      "tag": "0003_fast_exiles",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "6",
+      "when": 1790671336260,
+      "tag": "0004_flimsy_groot",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "6",
+      "when": 1790684621316,
+      "tag": "0005_fresh_justice",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "6",
+      "when": 1790751548026,
+      "tag": "0006_volatile_azazel",
+      "breakpoints": true
+    }
+  ]
+}
