@@ -1,5 +1,5 @@
 import { businessCategories, categoryTags, overpassSelectors, businessIndustry } from "@/lib/business-categories";
-import { env } from "cloudflare:workers";
+import { env } from "@/lib/server-env";
 import { NextResponse } from "next/server";
 import { fetchProviderJSON, firstProviderJSON, DiscoveryProviderError } from "@/lib/discovery-http";
 import { getChatGPTUser } from "../../chatgpt-auth";

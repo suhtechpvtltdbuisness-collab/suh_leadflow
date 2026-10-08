@@ -1,4 +1,4 @@
-import { env } from "cloudflare:workers";
+import { env } from "@/lib/server-env";
 import { NextResponse } from "next/server";
 import { getChatGPTUser } from "../../chatgpt-auth";
 export async function GET(){if(!await getChatGPTUser())return NextResponse.json({error:"Sign in required."},{status:401});try{const data=await env.DB!.prepare("SELECT id,source,campaign,currency,amount,period,created_at AS createdAt FROM campaign_spend ORDER BY created_at DESC LIMIT 500").all();return NextResponse.json({spend:data.results});}catch{return NextResponse.json({error:"Campaign spend unavailable."},{status:503});}}

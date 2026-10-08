@@ -1,4 +1,4 @@
-import { env } from "cloudflare:workers";
+import { env } from "@/lib/server-env";
 import { NextResponse } from "next/server";
 
 const fields = ["company","website","country","city","state","region","area","postalCode","latitude","longitude","industry","contactName","contactRole","email","phone","offer","source","leadType","sourceId","campaign","consentStatus","consentNote","estimatedValue","wonValue","currency","sourceUrl","fitReason","stage","owner","nextFollowUp","notes"] as const;

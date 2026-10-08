@@ -1,4 +1,4 @@
-import { env } from "cloudflare:workers";
+import { env } from "@/lib/server-env";
 import { NextResponse } from "next/server";
 
 type Submission = {lead_id?:string;google_key?:string;is_test?:boolean;form_id?:string|number;campaign_id?:string|number;user_column_data?:Array<{column_id?:string;string_value?:string}>};

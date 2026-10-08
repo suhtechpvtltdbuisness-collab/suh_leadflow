@@ -1,4 +1,4 @@
-import { env } from "cloudflare:workers";
+import { env } from "@/lib/server-env";
 import { NextResponse } from "next/server";
 const fields: Record<string,string> = { company:"company", website:"website", country:"country", city:"city", state:"state", region:"region", area:"area", postalCode:"postal_code", latitude:"latitude", longitude:"longitude", industry:"industry", contactName:"contact_name", contactRole:"contact_role", email:"email", phone:"phone", offer:"offer", source:"source", leadType:"lead_type", sourceId:"source_id", campaign:"campaign", consentStatus:"consent_status", consentNote:"consent_note", estimatedValue:"estimated_value", wonValue:"won_value", currency:"currency", sourceUrl:"source_url", fitReason:"fit_reason", stage:"stage", owner:"owner", nextFollowUp:"next_follow_up", notes:"notes" };
 const stages = new Set(["Sourced","Verified","Qualified","Engaged","Discovery","Demo","Proposal","Won","Lost"]);
