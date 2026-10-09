@@ -18,11 +18,27 @@ const SIGN_IN_PATH = "/signin-with-chatgpt";
 const SIGN_OUT_PATH = "/signout-with-chatgpt";
 const CALLBACK_PATH = "/callback";
 
+/**
+ * Local-only stand-in for the host that used to inject the `oai-*` headers.
+ *
+ * Nothing sets those headers outside the original ChatGPT Sites host, so every
+ * gated route answers 401 on a laptop or on Vercel. Setting
+ * `LOCAL_DEV_USER_EMAIL` supplies a signed-in user for development and for the
+ * API suites in `tests/`. It is ignored when `NODE_ENV` is `production`, so it
+ * can never become a bypass on a deployed build.
+ */
+function localDevUser(): ChatGPTUser | null {
+  if (process.env.NODE_ENV === "production") return null;
+  const email = process.env.LOCAL_DEV_USER_EMAIL?.trim();
+  if (!email) return null;
+  return { userId: `local-dev:${email}`, displayName: email, email, fullName: null };
+}
+
 export async function getChatGPTUser(): Promise<ChatGPTUser | null> {
   const requestHeaders = await headers();
   const userId = requestHeaders.get(USER_ID_HEADER);
   const email = requestHeaders.get(USER_EMAIL_HEADER);
-  if (!userId || !email) return null;
+  if (!userId || !email) return localDevUser();
 
   const encodedFullName = requestHeaders.get(USER_FULL_NAME_HEADER);
   const fullName =

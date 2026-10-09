@@ -46,3 +46,6 @@ tsconfig.tsbuildinfo
 /.codex/
 /outputs/
 /work/
+
+# test-suite build directories
+.next-test-*

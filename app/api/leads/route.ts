@@ -1,5 +1,6 @@
 import { env } from "@/lib/server-env";
 import { NextResponse } from "next/server";
+import { getChatGPTUser } from "../../chatgpt-auth";
 
 const fields = ["company","website","country","city","state","region","area","postalCode","latitude","longitude","industry","contactName","contactRole","email","phone","offer","source","leadType","sourceId","campaign","consentStatus","consentNote","estimatedValue","wonValue","currency","sourceUrl","fitReason","stage","owner","nextFollowUp","notes"] as const;
 const columns = ["company","website","country","city","state","region","area","postal_code","latitude","longitude","industry","contact_name","contact_role","email","phone","offer","source","lead_type","source_id","campaign","consent_status","consent_note","estimated_value","won_value","currency","source_url","fit_reason","stage","owner","next_follow_up","notes"];
@@ -20,12 +21,14 @@ function normalize(raw: Record<string, unknown>) {
   return obj;
 }
 export async function GET() {
+  if (!await getChatGPTUser()) return NextResponse.json({ error: "Sign in required." }, { status: 401 });
   try {
     const data = await db().prepare("SELECT id, company, website, country, city, state, region, area, postal_code AS postalCode, latitude, longitude, industry, contact_name AS contactName, contact_role AS contactRole, email, phone, offer, source, lead_type AS leadType, source_id AS sourceId, campaign, consent_status AS consentStatus, consent_note AS consentNote, estimated_value AS estimatedValue, won_value AS wonValue, currency, first_response_at AS firstResponseAt, source_url AS sourceUrl, fit_reason AS fitReason, stage, owner, next_follow_up AS nextFollowUp, notes, created_at AS createdAt, updated_at AS updatedAt FROM leads ORDER BY updated_at DESC LIMIT 2000").all();
     return NextResponse.json({ leads: data.results });
   } catch { return NextResponse.json({ error: "Leads could not be loaded." }, { status: 503 }); }
 }
 export async function POST(request: Request) {
+  if (!await getChatGPTUser()) return NextResponse.json({ error: "Sign in required." }, { status: 401 });
   try {
     const body = await request.json() as Record<string,unknown>;
     const rows = Array.isArray(body.rows) ? body.rows : [body];

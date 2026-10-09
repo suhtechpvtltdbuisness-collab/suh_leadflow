@@ -1,8 +1,10 @@
 import { env } from "@/lib/server-env";
 import { NextResponse } from "next/server";
+import { getChatGPTUser } from "../../../chatgpt-auth";
 const fields: Record<string,string> = { company:"company", website:"website", country:"country", city:"city", state:"state", region:"region", area:"area", postalCode:"postal_code", latitude:"latitude", longitude:"longitude", industry:"industry", contactName:"contact_name", contactRole:"contact_role", email:"email", phone:"phone", offer:"offer", source:"source", leadType:"lead_type", sourceId:"source_id", campaign:"campaign", consentStatus:"consent_status", consentNote:"consent_note", estimatedValue:"estimated_value", wonValue:"won_value", currency:"currency", sourceUrl:"source_url", fitReason:"fit_reason", stage:"stage", owner:"owner", nextFollowUp:"next_follow_up", notes:"notes" };
 const stages = new Set(["Sourced","Verified","Qualified","Engaged","Discovery","Demo","Proposal","Won","Lost"]);
 export async function PATCH(request: Request, { params }: { params: Promise<{id:string}> }) {
+  if (!await getChatGPTUser()) return NextResponse.json({ error: "Sign in required." }, { status: 401 });
   try {
     const { id } = await params;
     const body = await request.json() as Record<string,unknown>;
@@ -25,6 +27,13 @@ export async function PATCH(request: Request, { params }: { params: Promise<{id:
   } catch { return NextResponse.json({error:"Could not update lead."},{status:503}); }
 }
 export async function DELETE(_request: Request, {params}:{params:Promise<{id:string}>}) {
-  try { const {id}=await params; await env.DB!.prepare("DELETE FROM leads WHERE id = ?").bind(id).run(); return NextResponse.json({deleted:true}); }
+  if (!await getChatGPTUser()) return NextResponse.json({ error: "Sign in required." }, { status: 401 });
+  try {
+    const {id}=await params;
+    const result=await env.DB!.prepare("DELETE FROM leads WHERE id = ?").bind(id).run();
+    // Reporting success for an id that was never there hides a stale UI.
+    if(!result.meta.changes)return NextResponse.json({error:"Lead not found."},{status:404});
+    return NextResponse.json({deleted:true});
+  }
   catch { return NextResponse.json({error:"Could not delete lead."},{status:503}); }
 }

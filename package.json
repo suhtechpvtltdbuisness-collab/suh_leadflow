@@ -10,6 +10,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test": "node --import ./tests/ts-resolve.mjs --test tests/providers.test.mjs",
+    "test:live": "node --import ./tests/ts-resolve.mjs --test tests/live-providers.test.mjs",
+    "test:api": "node --import ./tests/ts-resolve.mjs --test --test-timeout=600000 tests/api-routes.test.mjs",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "node --env-file-if-exists=.env db/migrate.mjs"
   },
